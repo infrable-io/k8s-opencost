@@ -1,0 +1,16 @@
+apiVersion: v2
+name: opencost
+description: |
+  A Helm chart for OpenCost, a vendor-neutral open source project for measuring and allocating infrastructure and container costs in Kubernetes environments.
+icon: https://github.com/infrable-io/k8s-opencost/blob/master/assets/icon.png
+type: application
+version: 0.1.0 # Chart version
+appVersion: "1.99.0" # Application version
+dependencies:
+  # Dependency for OpenCost
+  #
+  # See: https://www.opencost.io/docs/install
+  - name: prometheus
+    version: "15.14.0"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled

@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "opencost.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "opencost.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "opencost.selectorLabels" . | nindent 6 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      {{- with .Values.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "opencost.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Always
+      serviceAccountName: {{ include "opencost.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ include "opencost.image" . }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+          ports:
+            # See: https://github.com/opencost/opencost/blob/develop/pkg/cmd/costmodel/costmodel.go
+            - name: http
+              containerPort: 9003
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+              # The Prometheus endpoint should have the form:
+              #   * http://<service>.<namespace>.svc
+            - name: PROMETHEUS_SERVER_ENDPOINT
+              value: "http://opencost-prometheus-server.{{ .Release.Namespace }}.svc"
+              # The GCP Pricing API requires a key. This is supplied just for
+              # evaluation.
+            - name: CLOUD_PROVIDER_API_KEY
+              value: "{{ .Values.env.CLOUD_PROVIDER_API_KEY }}"
+              # Default cluster ID to use if cluster_id is not set in
+              # Prometheus metrics.
+            - name: CLUSTER_ID
+              value: "{{ .Values.env.CLUSTER_ID}}"
+      {{- if .Values.ui }}
+        - name: opencost-ui
+          image: {{ include "opencost.ui.image" . }}
+          imagePullPolicy: {{ .Values.ui.image.imagePullPolicy }}
+          resources:
+            {{- toYaml .Values.ui.resources | nindent 12 }}
+      {{- end }}

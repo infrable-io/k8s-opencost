@@ -1,0 +1,26 @@
+{{ .Chart.Name }} has been installed.
+
+OpenCost cost allocation metrics are available on port {{ .Values.service.port }} of the {{ include "opencost.name" . }} service after configuring port forwarding:
+
+  $ kubectl --namespace {{ .Release.Namespace }} port-forward service/opencost {{ .Values.service.port }}:9003
+
+Example:
+
+  $ curl http://localhost:9003/allocation/compute
+
+{{ if .Values.ui.service -}}
+The OpenCost UI can be accessed on http://localhost:{{ .Values.ui.service.port }}.
+
+{{ end -}}
+
+The Allocation API can also be queried using the kubectl-cost plugin:
+
+  $ kubectl cost \
+      --service-port {{ .Values.service.port }} \
+      --service-name opencost \
+      --kubecost-namespace {{ .Release.Namespace }} \
+      --allocation-path /allocation/compute \
+      ...
+
+For OpenCost documentation, see the following:
+  * https://www.opencost.io/docs

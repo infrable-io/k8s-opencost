@@ -1,0 +1,28 @@
+# Ensure the Allocation API endpoint (/allocation/compute) is available.
+#
+# To run Helm chart tests, execute the following:
+#
+#   ```
+#   $ helm test opencost --namespace opencost
+#   ```
+#
+# For documentation on Helm chart tests, see the following:
+#   * https://helm.sh/docs/topics/chart_tests
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "opencost.fullname" . }}-test-allocation-api-endpoint"
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "opencost.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      # --spider: Only check URL existence: $? is 0 if exists
+      args: ['--spider','{{ include "opencost.fullname" . }}:{{ .Values.service.port }}/allocation/compute?window=1m']
+  restartPolicy: Never

@@ -1,0 +1,80 @@
+# OpenCost Helm chart values.yaml file.
+#
+# See: https://www.opencost.io/docs
+
+# Install Prometheus
+#
+# See: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus
+prometheus:
+  enabled: true
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+  # Adds additional scrape configs to prometheus.yml.
+  #
+  # See: https://raw.githubusercontent.com/opencost/opencost/develop/kubernetes/prometheus/extraScrapeConfigs.yaml
+  extraScrapeConfigs: |
+    - job_name: opencost
+      honor_labels: true
+      scrape_interval: 1m
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      dns_sd_configs:
+      - names:
+        - opencost.opencost
+        type: 'A'
+        port: 9003
+
+replicas: 1
+
+annotations: {}
+
+# See: https://quay.io/user/kubecost1
+image:
+  registry: quay.io
+  repository: kubecost1/kubecost-cost-model
+  tag: prod-1.99.0
+  imagePullPolicy: Always
+
+resources:
+  requests:
+    cpu: "10m"
+    memory: "55M"
+  limits:
+    cpu: "999m"
+    memory: "1G"
+
+env:
+  CLOUD_PROVIDER_API_KEY: ""
+  CLUSTER_ID: ""
+
+service:
+  annotations: {}
+  type: ClusterIP
+  port: 9003
+
+serviceAccount:
+  annotations: {}
+
+# See: https://www.opencost.io/blog/opencost-ui
+#
+# NOTE: Uncomment to enable the OpenCost UI.
+ui: {}
+  # image:
+  #   registry: quay.io
+  #   repository: kubecost1/opencost-ui
+  #   tag: prod-1.99.0
+  #   imagePullPolicy: Always
+
+  # resources:
+  #   requests:
+  #     cpu: "10m"
+  #     memory: "55M"
+  #   limits:
+  #     cpu: "999m"
+  #     memory: "1G"
+
+  # service:
+  #   port: 9090
