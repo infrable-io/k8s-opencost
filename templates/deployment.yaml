@@ -47,10 +47,15 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+            {{- if .Values.env.PROMETHEUS_SERVER_ENDPOINT }}
               # The Prometheus endpoint should have the form:
               #   * http://<service>.<namespace>.svc
             - name: PROMETHEUS_SERVER_ENDPOINT
+              value: "{{ .Values.env.PROMETHEUS_SERVER_ENDPOINT }}"
+            {{- else }}
+            - name: PROMETHEUS_SERVER_ENDPOINT
               value: "http://{{ .Release.Name }}-prometheus-server.{{ .Release.Namespace }}.svc"
+            {{- end }}
               # The GCP Pricing API requires a key. This is supplied just for
               # evaluation.
             - name: CLOUD_PROVIDER_API_KEY
@@ -59,10 +64,10 @@ spec:
               # Prometheus metrics.
             - name: CLUSTER_ID
               value: "{{ .Values.env.CLUSTER_ID}}"
-      {{- if .Values.ui }}
+        {{- if .Values.ui }}
         - name: opencost-ui
           image: {{ include "opencost.ui.image" . }}
           imagePullPolicy: {{ .Values.ui.image.imagePullPolicy }}
           resources:
             {{- toYaml .Values.ui.resources | nindent 12 }}
-      {{- end }}
+        {{- end }}

@@ -5,15 +5,9 @@
 
 k8s-opencost installs [OpenCost](https://www.opencost.io), a vendor-neutral open source project for measuring and allocating infrastructure and container costs in Kubernetes environments. OpenCost provides the cost allocation engine used by [Kubecost](https://www.kubecost.com), a commerical product.
 
-This Helm chart captures the OpenCost installation steps documented [here](https://www.opencost.io/docs/install).
+This Helm chart captures the OpenCost installation steps documented [here](https://www.opencost.io/docs/install) in code.
 
 ## Installation
-
-### From GitHub
-
-```bash
-# TODO
-```
 
 ### From Source
 

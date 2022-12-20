@@ -4,7 +4,7 @@ description: |
   A Helm chart for OpenCost, a vendor-neutral open source project for measuring and allocating infrastructure and container costs in Kubernetes environments.
 icon: https://github.com/infrable-io/k8s-opencost/blob/master/assets/icon.png
 type: application
-version: 0.1.0 # Chart version
+version: 0.2.0 # Chart version
 appVersion: "1.99.0" # Application version
 dependencies:
   # Dependency for OpenCost

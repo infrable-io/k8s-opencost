@@ -19,9 +19,9 @@ spec:
       protocol: TCP
       port: {{ .Values.service.port }}
       targetPort: 9003
-  {{- if .Values.ui }}
+    {{- if .Values.ui }}
     - name: opencost-ui
       protocol: TCP
       port: {{ .Values.ui.service.port }}
       targetPort: 9090
-  {{- end }}
+    {{- end }}

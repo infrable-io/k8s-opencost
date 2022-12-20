@@ -47,6 +47,7 @@ resources:
     memory: "1G"
 
 env:
+  PROMETHEUS_SERVER_ENDPOINT: ""
   CLOUD_PROVIDER_API_KEY: ""
   CLUSTER_ID: ""
 
