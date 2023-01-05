@@ -25,6 +25,6 @@ jobs:
           helm dependency build
           helm lint
           helm package .
-          helm install opencost opencost-*.tgz
+          helm install opencost opencost-*.tgz --wait
       - name: "Test Helm chart installation"
         run: helm test opencost
