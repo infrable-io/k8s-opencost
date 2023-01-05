@@ -3,6 +3,10 @@
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/infrable-io/terraform-aws-static-website/blob/master/LICENSE)
 [![Maintained by Infrable](https://img.shields.io/badge/Maintained%20by-Infrable-000000)](https://infrable.io)
 
+<p align="center">
+  <img src="assets/icon.png"/>
+</p>
+
 k8s-opencost installs [OpenCost](https://www.opencost.io), a vendor-neutral open source project for measuring and allocating infrastructure and container costs in Kubernetes environments. OpenCost provides the cost allocation engine used by [Kubecost](https://www.kubecost.com), a commerical product.
 
 This Helm chart captures the OpenCost installation steps documented [here](https://www.opencost.io/docs/install) in code.
