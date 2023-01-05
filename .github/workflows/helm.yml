@@ -1,4 +1,3 @@
-# See: https://minikube.sigs.k8s.io/docs/tutorials/setup_minikube_in_github_actions
 name: Helm
 
 on:
@@ -12,7 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     name: "Test Helm chart"
     steps:
-    - uses: actions/checkout@v3
-    - name: "Start minikube"
-      id: minikube
-      uses: medyagh/setup-minikube@latest
+      # NOTE: You should use the checkout action any time your workflow will
+      # run against the repository's code.
+      # See: https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v3
+      # See: https://github.com/marketplace/actions/setup-minikube
+      - uses: medyagh/setup-minikube@latest
+      - name: "Install Helm"
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      - name: "Lint, package and install Helm chart"
+        run: |
+          helm lint
+          helm package .
+          helm install opencost opencost-*.tgz
+      - name: "Test Helm chart installation"
+        run: helm test opencost
