@@ -2,6 +2,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/infrable-io/terraform-aws-static-website/blob/master/LICENSE)
 [![Maintained by Infrable](https://img.shields.io/badge/Maintained%20by-Infrable-000000)](https://infrable.io)
+[![GitHub Actions - Helm](https://github.com/infrable-io/k8s-opencost/actions/workflows/helm.yml/badge.svg)](https://github.com/infrable-io/k8s-opencost/actions/workflows/helm.yml)
 
 <p align="center">
   <img src="assets/icon.png"/>
