@@ -21,6 +21,7 @@ jobs:
         run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
       - name: "Lint, package and install Helm chart"
         run: |
+          helm repo add https://prometheus-community.github.io/helm-charts
           helm dependency build
           helm lint
           helm package .
